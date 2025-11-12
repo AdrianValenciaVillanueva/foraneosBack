@@ -16,7 +16,6 @@ Requisitos
 Instalación
 
 ```powershell
-cd "C:\Users\villa\OneDrive\Escritorio\foraneosRenta"
 npm install
 ```
 
