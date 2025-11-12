@@ -1,6 +1,5 @@
 # Foraneos Renta - API (Express.js)
 
-Proyecto base en Express.js (JavaScript, sin TypeScript) con una estructura simple y funcional.
 
 Estructura:
 
