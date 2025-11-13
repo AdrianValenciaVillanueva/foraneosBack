@@ -5,6 +5,7 @@ const errorHandler = require('./middlewares/errorHandler');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const alojaRouter = require('./routes/aloja');
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(logger);
 // routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/aloja', alojaRouter);
 
 // 404
 app.use((req, res, next) => {
