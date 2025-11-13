@@ -15,11 +15,15 @@ exports.list = async (req, res, next) => {
 // crear un usuario: usuario, nombre, correo y contraseña
 exports.create = async (req, res, next) => {
   try {
-    console.log(req.body);
-    const { Usuario, Nombre, Correo, Contrasenia } = req.body;
-    console.log(Usuario, Nombre, Correo, Contrasenia);
+    
+    if(req.body.Tipo === undefined){
+      req.body.Tipo = 2;
+    }
+    
+    const { Usuario, Nombre, Correo, Contrasenia, Tipo} = req.body;
+
     if (!Usuario || !Nombre || !Correo || !Contrasenia) {
-      return res.status(400).json({ error: 'usuario, nombre, correo y contrasenia son requeridos' });
+      return res.status(400).json({ error: 'usuario, nombre, correo, contrasenia y tipo son requeridos' });
     }
 
     // comprobar si email o username ya existen
@@ -33,14 +37,14 @@ exports.create = async (req, res, next) => {
 
     // insertar usuario
     const [result] = await pool.query(
-      'INSERT INTO usuarios (Usuario, Nombre, Correo, contrasenia) VALUES (?, ?, ?, ?)',
-      [Usuario, Nombre, Correo, hash]
+      'INSERT INTO usuarios (Usuario, Nombre, Correo, contrasenia, Tipo) VALUES (?, ?, ?, ?, ?)',
+      [Usuario, Nombre, Correo, hash, Tipo]
     );
     console.log(result);
 
     const insertId = result.insertId;
     console.log(insertId);
-    const [rows] = await pool.query('SELECT ID_Usuario, Usuario, Nombre, Correo FROM Usuarios WHERE ID_Usuario = ?', [insertId]);
+    const [rows] = await pool.query('SELECT ID_Usuario, Usuario, Nombre, Correo, Tipo FROM Usuarios WHERE ID_Usuario = ?', [insertId]);
     res.status(201).json(rows[0]);
   } catch (err) {
     next(err);
@@ -54,7 +58,7 @@ exports.login = async (req, res, next) => {
     if (!Usuario || !Contrasenia) {
       return res.status(400).json({ error: 'usuario and contrasenia are required' });
     }
-    const [rows] = await pool.query('SELECT ID_Usuario, Usuario, Nombre, Correo, contrasenia FROM Usuarios WHERE Usuario = ?', [Usuario]);
+    const [rows] = await pool.query('SELECT ID_Usuario, Usuario, Nombre, Correo, contrasenia, Tipo FROM Usuarios WHERE Usuario = ?', [Usuario]);
     if (!rows.length) {
       return res.status(401).json({ error: 'invalid credentials' });
     }
@@ -63,7 +67,7 @@ exports.login = async (req, res, next) => {
     if (!isValid) {
       return res.status(401).json({ error: 'invalid credentials' });
     }
-    res.json({ message: 'login successful', user: { ID_Usuario: user.ID_Usuario, Usuario: user.Usuario, Nombre: user.Nombre, Correo: user.Correo } });
+    res.json({ message: 'login successful', user: { ID_Usuario: user.ID_Usuario, Usuario: user.Usuario, Nombre: user.Nombre, Correo: user.Correo, Tipo: user.Tipo } });
   } catch (err) {
     next(err);
   }
