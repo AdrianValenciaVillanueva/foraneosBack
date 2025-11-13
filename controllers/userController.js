@@ -46,3 +46,25 @@ exports.create = async (req, res, next) => {
     next(err);
   }
 };
+
+//iniciar sesión
+exports.login = async (req, res, next) => {
+  try { 
+    const { Usuario, Contrasenia } = req.body;
+    if (!Usuario || !Contrasenia) {
+      return res.status(400).json({ error: 'usuario and contrasenia are required' });
+    }
+    const [rows] = await pool.query('SELECT ID_Usuario, Usuario, Nombre, Correo, contrasenia FROM Usuarios WHERE Usuario = ?', [Usuario]);
+    if (!rows.length) {
+      return res.status(401).json({ error: 'invalid credentials' });
+    }
+    const user = rows[0];
+    const isValid = await bcrypt.compare(Contrasenia, user.contrasenia);
+    if (!isValid) {
+      return res.status(401).json({ error: 'invalid credentials' });
+    }
+    res.json({ message: 'login successful', user: { ID_Usuario: user.ID_Usuario, Usuario: user.Usuario, Nombre: user.Nombre, Correo: user.Correo } });
+  } catch (err) {
+    next(err);
+  }
+};
