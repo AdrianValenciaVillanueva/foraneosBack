@@ -92,10 +92,33 @@ exports.crearAlojamiento = async (req, res) => {
                 Sala, Cochera, Patio, Estudio
             ];
             
+            /*Consulta y atributos para insertar en la tabla imagenes - pendiente de implementar
+
+            const imagenes = req.files;
+            
+            const consulta5 = `
+                INSERT INTO imagenes (
+                    ID_Alojamiento, imagen1, imagen2, imagen3, imagen4, imagen5, imagen6
+                ) VALUES (?, ?, ?, ?, ?, ?, ?)
+            `;
+
+            const atributos5 = [
+                ID_Alojamiento,
+                imagenes.imagen1?.[0]?.buffer || null,
+                imagenes.imagen2?.[0]?.buffer || null,
+                imagenes.imagen3?.[0]?.buffer || null,
+                imagenes.imagen4?.[0]?.buffer || null,
+                imagenes.imagen5?.[0]?.buffer || null,
+                imagenes.imagen6?.[0]?.buffer || null
+            ];
+
+
+            */
         //Se realizan las demás consultas para las otras tablas relacionadas
         await db.query(consulta2, atributos2); //Tabla muebles
         await db.query(consulta3, atributos3); //Tabla servicios
         await db.query(consulta4, atributos4); //Tabla amenidades
+        //await db.query(consulta5, atributos5); //Tabla imagenes - pendiente de implementar
 
         res.status(201).json({
         message: 'Alojamiento creado exitosamente',
@@ -104,5 +127,14 @@ exports.crearAlojamiento = async (req, res) => {
 
     }catch(error){
         res.status(500).json({message: 'Error al crear el alojamiento', error: error.message});
+    }
+}
+
+//Funcion para obtener los alojamientos con estado True
+exports.obtenerAlojamientos = async (req, res) => {
+    try{
+        
+    }catch(error){
+        res.status(500).json({message: 'Error al obtener los alojamientos', error: error.message});
     }
 }
