@@ -4,7 +4,8 @@ const upload = require('../middlewares/uploadMiddleware');
 const alojaController = require('../controllers/alojaController');
 
 router.post('/crear', alojaController.crearAlojamiento);
-
+router.get('/obtener', alojaController.obtenerAlojamientos);
+router.get('/ver/:id', alojaController.alojamientoInfo);
 
 
 /* Codigo para subir imagenes - pendiente de implementar
