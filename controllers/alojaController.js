@@ -92,7 +92,7 @@ exports.crearAlojamiento = async (req, res) => {
                 Sala, Cochera, Patio, Estudio
             ];
             
-            /*Consulta y atributos para insertar en la tabla imagenes - pendiente de implementar
+            //Consulta y atributos para insertar en la tabla imagenes - pendiente de implementar
 
             const imagenes = req.files;
 
@@ -113,12 +113,12 @@ exports.crearAlojamiento = async (req, res) => {
             ];
 
 
-            */
+            
         //Se realizan las demás consultas para las otras tablas relacionadas
         await db.query(consulta2, atributos2); //Tabla muebles
         await db.query(consulta3, atributos3); //Tabla servicios
         await db.query(consulta4, atributos4); //Tabla amenidades
-        //await db.query(consulta5, atributos5); //Tabla imagenes - pendiente de implementar
+        await db.query(consulta5, atributos5); //Tabla imagenes - pendiente de implementar
 
         res.status(201).json({
         message: 'Alojamiento creado exitosamente',
