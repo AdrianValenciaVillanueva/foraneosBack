@@ -54,11 +54,11 @@ exports.create = async (req, res, next) => {
 //iniciar sesión
 exports.login = async (req, res, next) => {
   try { 
-    const { Usuario, Contrasenia } = req.body;
-    if (!Usuario || !Contrasenia) {
+    const { Correo, Contrasenia } = req.body;
+    if (!Correo || !Contrasenia) {
       return res.status(400).json({ error: 'usuario and contrasenia are required' });
     }
-    const [rows] = await pool.query('SELECT ID_Usuario, Usuario, Nombre, Correo, contrasenia, Tipo FROM Usuarios WHERE Usuario = ?', [Usuario]);
+    const [rows] = await pool.query('SELECT ID_Usuario, Usuario, Nombre, Correo, contrasenia, Tipo FROM Usuarios WHERE Correo = ?', [Correo]);
     if (!rows.length) {
       return res.status(401).json({ error: 'invalid credentials' });
     }

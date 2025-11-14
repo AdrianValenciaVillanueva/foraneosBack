@@ -34,6 +34,14 @@ Desarrollo
 npm run dev
 ```
 
+Habilitar CORS para pruebas
+
+Si vas a probar la API desde un frontend local (por ejemplo `http://localhost:3001`), ya incluimos `cors` en `app.js` con una configuración permisiva para desarrollo. Para restringir el origen en producción, sustituye `app.use(cors({ origin: true }))` por algo como:
+
+```javascript
+app.use(cors({ origin: 'https://mi-frontend.com' }));
+```
+
 Producción
 
 ```powershell
