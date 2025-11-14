@@ -53,23 +53,6 @@ Rutas de ejemplo
 - GET /users -> lista de usuarios
  - POST /users { "username": "usuario1", "name": "Nombre", "email": "a@b.com", "password": "secret" } -> crea usuario
 
-Base de datos / migración
-
-Ejecuta la migración para crear la tabla `users` en tu base MySQL/MariaDB (puedes usar HeidiSQL). El archivo de migración está en `migrations/create_users.sql`.
-
-Ejemplo SQL (ya incluido en `migrations/create_users.sql`):
-
-```sql
-CREATE TABLE IF NOT EXISTS users (
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	username VARCHAR(100) NOT NULL UNIQUE,
-	name VARCHAR(255) NOT NULL,
-	email VARCHAR(255) NOT NULL UNIQUE,
-	password_hash VARCHAR(255) NOT NULL,
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
 
 Siguientes pasos
-- Añadir validación y persistencia (DB)
 - Añadir ESLint y tests
