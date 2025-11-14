@@ -4,12 +4,11 @@ const db = require('../db');
 //Crear Alojamiento
 exports.crearAlojamiento = async (req, res) => {
     try{
-        const {
-            alojamiento,
-            muebles,
-            servicios,
-            amenidades
-        } = req.body;
+        const alojamiento = JSON.parse(req.body.alojamiento);
+        const muebles = JSON.parse(req.body.muebles);
+        const servicios = JSON.parse(req.body.servicios);
+        const amenidades = JSON.parse(req.body.amenidades);
+        const imagenes = req.files;
 
         //Validar alojamiento
         const {
@@ -93,8 +92,6 @@ exports.crearAlojamiento = async (req, res) => {
             ];
             
             //Consulta y atributos para insertar en la tabla imagenes - pendiente de implementar
-
-            const imagenes = req.files;
 
             const consulta5 = `
                 INSERT INTO imagenes (
@@ -213,7 +210,7 @@ exports.obtenerAlojamientos = async (req, res) => {
             }
         }));
 
-        res.status(200).json(rows);
+        res.status(200).json(alojamientos);
     }catch(error){
         res.status(500).json({message: 'Error al obtener los alojamientos', error: error.message});
     }

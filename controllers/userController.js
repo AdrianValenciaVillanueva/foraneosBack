@@ -20,7 +20,14 @@ exports.create = async (req, res, next) => {
       req.body.Tipo = 2;
     }
     
-    const { Usuario, Nombre, Correo, Contrasenia, Tipo} = req.body;
+    const { Usuario, Nombre, Correo, Contrasenia} = req.body;
+
+    let Tipo;
+    if (Correo.endsWith('@alumnos.udg.mx')) {
+      Tipo = 2; //Es Estudiante
+    } else {
+      Tipo = 1; //Es rentador
+    }
 
     if (!Usuario || !Nombre || !Correo || !Contrasenia) {
       return res.status(400).json({ error: 'usuario, nombre, correo, contrasenia y tipo son requeridos' });
