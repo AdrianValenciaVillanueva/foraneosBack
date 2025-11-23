@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 // obtener la lista de usuarios (sin los hashes)
 exports.list = async (req, res, next) => {
   try {
-    const [rows] = await pool.query('SELECT id, username, name, email, created_at FROM users ORDER BY id');
+    const [rows] = await pool.query('SELECT ID_Usuario, Usuario, Nombre, Correo, Tipo FROM usuarios ORDER BY ID_Usuario');
     res.json(rows);
   } catch (err) {
     next(err);
@@ -75,6 +75,36 @@ exports.login = async (req, res, next) => {
       return res.status(401).json({ error: 'invalid credentials' });
     }
     res.json({ message: 'login successful', user: { ID_Usuario: user.ID_Usuario, Usuario: user.Usuario, Nombre: user.Nombre, Correo: user.Correo, Tipo: user.Tipo } });
+  } catch (err) {
+    next(err);
+  }
+};
+//editar info
+exports.update = async (req, res, next) => {
+  try {
+    const { ID_Usuario, Usuario, Nombre, Correo, Tipo, Contrasenia } = req.body;
+    if (!ID_Usuario || !Usuario || !Nombre || !Correo || !Tipo) {
+      return res.status(400).json({ error: 'Todos los campos son requeridos' });
+    }
+
+    let query = 'UPDATE usuarios SET Usuario = ?, Nombre = ?, Correo = ?, Tipo = ?';
+    let params = [Usuario, Nombre, Correo, Tipo];
+
+    // Si se envía una nueva contraseña, la hashea y la actualiza
+    if (Contrasenia) {
+      const hash = await bcrypt.hash(Contrasenia, 10);
+      query += ', contrasenia = ?';
+      params.push(hash);
+    }
+
+    query += ' WHERE ID_Usuario = ?';
+    params.push(ID_Usuario);
+
+    const [result] = await pool.query(query, params);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    res.json({ message: 'Usuario actualizado' });
   } catch (err) {
     next(err);
   }
